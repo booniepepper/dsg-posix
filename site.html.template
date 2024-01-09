@@ -2,8 +2,7 @@
 <html>
   <head>
     <title>${TITLE}</title>
-    <link rel='stylesheet' href='./style.css' type='text/css'>
-    <link rel='stylesheet' href='../style.css' type='text/css'>
+    <link rel='stylesheet' href='${ROOT}/style.css' type='text/css'>
   </head>
   <body>
     <div>
@@ -11,7 +10,10 @@
       <hr>
       <main>${CONTENT}</main>
       <hr>
-      <footer><em>Written by a cat on the internet</em></footer>
+      <footer>
+        <p><a href='${BLOG}'>Blog</a></p>
+        <em>Written by a cat on the internet</em>
+      </footer>
     </div>
   </body>
 </html>

@@ -1,10 +1,11 @@
 #!/bin/sh
 
 export TITLE='Cat Writes'
-
 export CONTENT='
 <p>Meow mew <a href="blog">blog</a> meow.</p>
 <p>にゃん</p>'
+export ROOT='.'
+export BLOG='blog'
 
 # Homepage
 < site.html.template \
@@ -12,6 +13,8 @@ export CONTENT='
   > index.html
 
 cd blog
+export ROOT='..'
+export BLOG='./'
 
 posts=''
 
