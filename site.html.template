@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>${TITLE}</title>
+    <link rel='stylesheet' href='./style.css' type='text/css'>
+  </head>
+  <body>
+    <div>
+      <header><h1>${TITLE}</h1></header>
+      <hr>
+      <main>${CONTENT}</main>
+      <hr>
+      <footer><em>Written by a cat on the internet</em></footer>
+    </div>
+  </body>
+</html>
