@@ -33,7 +33,7 @@ kebab_to_space() {
 # Posts, sorted for latest at the top.
 for post in *.html.part; do
   dest="$(echo "$post" | drop_ext)"
-  export TITLE="$(echo "$dest" | without_date | drop_ext | kebab_to_space )"
+  export TITLE="$(echo "$dest" | without_date | drop_ext | kebab_to_space)"
   export CONTENT="$(cat "$post")"
   < ../site.html.template \
     envsubst \
