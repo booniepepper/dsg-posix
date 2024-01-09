@@ -35,11 +35,11 @@ for post in *.html.part; do
   < ../site.html.template \
     envsubst \
     > "$dest"
-  posts="$posts\n$post"
+  posts="$posts\n$dest"
 done
 
 export TITLE='Cat Writes a Blog'
-export CONTENT="$(echo "$posts" | sort -r | awk 'NF { print("<p>"$1"</p>") }')"
+export CONTENT="$(echo "$posts" | sort -r | awk 'NF { print("<p><a href=\""$1"\">"$1"</a></p>") }')"
   < ../site.html.template \
     envsubst \
     > index.html
