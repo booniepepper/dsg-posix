@@ -8,5 +8,7 @@ Feel free to clone it and hack it up into whatever you want it to be.
 
 # Template Credits
 
-The template is from [J.R. Hill](https://so.dang.cool), distributed for free
-as [beerware](https://github.com/booniepepper/dsg-posix/tree/core/LICENSE).
+This comes from a github repository template at https://github.com/booniepepper/dsg-posix
+
+Distributed as [beerware](https://github.com/booniepepper/dsg-posix/tree/core/LICENSE)
+by [J.R. Hill](https://so.dang.cool).
