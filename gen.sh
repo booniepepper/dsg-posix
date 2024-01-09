@@ -12,7 +12,7 @@ export BLOG='blog'
   envsubst \
   > index.html
 
-cd blog
+cd blog || exit 1
 export ROOT='..'
 export BLOG='./'
 
@@ -33,16 +33,23 @@ kebab_to_space() {
 # Posts, sorted for latest at the top.
 for post in *.html.part; do
   dest="$(echo "$post" | drop_ext)"
-  export TITLE="$(echo "$dest" | without_date | drop_ext | kebab_to_space)"
-  export CONTENT="$(cat "$post")"
+
+  TITLE="$(echo "$dest" | without_date | drop_ext | kebab_to_space)"
+  export TITLE
+  CONTENT="$(cat "$post")"
+  export CONTENT
+
   < ../site.html.template \
     envsubst \
     > "$dest"
+
   posts="$posts\n$dest"
 done
 
 export TITLE='Cat Writes a Blog'
-export CONTENT="$(echo "$posts" | sort -r | awk 'NF { print("<p><a href=\""$1"\">"$1"</a></p>") }')"
-  < ../site.html.template \
-    envsubst \
-    > index.html
+CONTENT="$(echo "$posts" | sort -r | awk 'NF { print("<p><a href=\""$1"\">"$1"</a></p>") }')"
+export CONTENT
+
+< ../site.html.template \
+  envsubst \
+  > index.html
