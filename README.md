@@ -12,3 +12,7 @@ This comes from a github repository template at https://github.com/booniepepper/
 
 Distributed as [beerware](https://github.com/booniepepper/dsg-posix/tree/core/LICENSE)
 by [J.R. Hill](https://so.dang.cool).
+
+# Related Works
+
+* [ssg](https://romanzolotarev.com/ssg.html) by Roman Zolotarev (Markdown + POSIX shell)
