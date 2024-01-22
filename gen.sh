@@ -26,20 +26,16 @@ get_date() {
   cut -d'-' -f 1,2,3
 }
 
-drop_ext() {
-  rev | cut -d'.' -f 2- | rev
-}
-
 kebab_to_space() {
   sed 's/-/ /g'
 }
 
 # Posts, sorted for latest at the top.
 for post in *.html.part; do
-  dest="$(echo "$post" | drop_ext)"
+  dest="$(basename "$post" .part)"
   date="$(echo "$post" | get_date)"
 
-  TITLE="$(echo "$dest" | without_date | drop_ext | kebab_to_space)"
+  TITLE="$(basename "$dest" .html | without_date | kebab_to_space)"
   export TITLE
   CONTENT="$(cat "$post")"
   export CONTENT
