@@ -1,5 +1,7 @@
 #!/bin/sh
 
+RS=""
+
 export TITLE='Cat Writes'
 export CONTENT='
 <p>Meow mew <a href="blog">blog</a> meow.</p>
@@ -44,11 +46,11 @@ for post in *.html.part; do
     envsubst \
     > "$dest"
 
-  posts="$posts\n$dest\0000$date\0000$TITLE"
+  posts="$posts\n$dest$RS$date$RS$TITLE"
 done
 
 export TITLE='Cat Writes a Blog'
-CONTENT="$(echo "$posts" | sort -r | awk -F "\0" 'NF { print("<p><a href=\""$1"\">"$2,$3"</a></p>") }')"
+CONTENT="$(echo "$posts" | sort -r | awk -F "$RS" 'NF { print("<p><a href=\""$1"\">"$2,$3"</a></p>") }')"
 export CONTENT
 
 < ../site.html.template \
