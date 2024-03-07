@@ -38,7 +38,7 @@ find "$sources_root" -type f -name 'page-list*' -delete
     esac
 
     CONTENT="$(cat "$content")"
-    ROOT="$(realpath --relative-to="$path" "$sources_root")"
+    ROOT="$(realpath --relative-to="$(dirname "$path/$dest")" "$sources_root")"
 
     export TITLE
     export CONTENT
