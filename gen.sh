@@ -2,57 +2,78 @@
 
 RS=""
 
-export TITLE='Cat Writes'
-export CONTENT='
-<p>Meow mew <a href="blog">blog</a> meow.</p>
-<p>にゃん</p>'
-export ROOT='.'
-export BLOG='blog'
+site_root="$(dirname "$0")"
+site_template="$site_root/site.html.template"
 
-# Homepage
-< site.html.template \
-  envsubst \
-  > index.html
+cd "$site_root" || exit 1
 
-cd blog || exit 1
-export ROOT='..'
-export BLOG='./'
+# Clean before we start
 
-posts=''
+find "$site_root" -type f -name '*.html' -delete
+find "$site_root" -type f -name 'page-list*' -delete
 
-without_date() {
-  cut -d'-' -f 4-
-}
+# Generate pages
 
-get_date() {
-  cut -d'-' -f 1,2,3
-}
+{
+  find . -type f -name '*.html.part' >tmp
+  while IFS= read -r content
+  do
+    path="$(dirname "$content")"
+    TITLE="$(basename "$content" | cut -d '.' -f 1)"
+    date="$(expr "$TITLE" : '\([[:digit:]]*-[[:digit:]]*-[[:digit:]]*\)')"
 
-kebab_to_space() {
-  sed 's/-/ /g'
-}
+    if [ -n "$date" ]
+    then
+      TITLE="$date $(echo "$TITLE" | cut -d '-' -f 4- | sed 's/-/ /g')"
+    else
+      TITLE="$(echo "$TITLE" | sed 's/-/ /g')"
+    fi
 
-# Posts, sorted for latest at the top.
-for post in *.html.part; do
-  dest="$(basename "$post" .part)"
-  date="$(echo "$post" | get_date)"
+    filename="$(basename "$content" .part | tr '[:upper:]' '[:lower:]')"
+    case "$filename" in
+      *.*.*) dest="$(echo "$filename" | cut -d '.' -f 2-)" ;;
+      *.*)   chunk="$(basename "$filename" .html)"
+             mkdir -p "$path/$chunk"
+             dest="$chunk/index.html" ;;
+    esac
 
-  TITLE="$(basename "$dest" .html | without_date | kebab_to_space)"
-  export TITLE
-  CONTENT="$(cat "$post")"
-  export CONTENT
+    CONTENT="$(cat "$content")"
 
-  < ../site.html.template \
+    export TITLE
+    export CONTENT
     envsubst \
-    > "$dest"
+      <"$site_template" \
+      >"$path/$dest"
 
-  posts="$posts\n$dest$RS$date$RS$TITLE"
-done
+    echo "$(echo "$dest" | sed 's/index.html$//')$RS$TITLE" >> "$path/page-list"
+  done <tmp
+  rm tmp
+}
 
-export TITLE='Cat Writes a Blog'
-CONTENT="$(echo "$posts" | sort -r | awk -F "$RS" 'NF { print("<p><a href=\""$1"\">"$2,$3"</a></p>") }')"
-export CONTENT
+# Generate page lists
 
-< ../site.html.template \
-  envsubst \
-  > index.html
+{
+  find . -type f -name page-list >tmp
+  while IFS= read -r list
+  do
+    path="$(dirname "$list")"
+    dest=index.html
+
+    if [ -f "$path/$dest" ]
+    then
+      dest=page-list.html
+    fi
+
+    TITLE='Page List'
+    CONTENT="<ul>$(sort -r "$list" | awk -F "$RS" 'NF { print("<li><a href=\""$1"\">"$2"</a></li>") }')</ul>"
+
+    export TITLE
+    export CONTENT
+    envsubst \
+      <"$site_template" \
+      >"$path/$dest"
+
+    rm "$list"
+  done <tmp
+  rm tmp
+}

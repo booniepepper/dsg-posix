@@ -11,7 +11,11 @@
       <main>${CONTENT}</main>
       <hr>
       <footer>
-        <p><a href='${ROOT}'>Home</a> | <a href='${BLOG}'>Blog</a></p>
+        <p>
+          <a href='/'>Home</a> |
+          <a href='/about.html'>About</a> |
+          <a href='/blog/'>Blog</a>
+        </p>
         <em>Written by a cat on the internet</em>
       </footer>
     </div>
