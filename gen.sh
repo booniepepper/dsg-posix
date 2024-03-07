@@ -2,15 +2,15 @@
 
 RS=""
 
-site_root="$(dirname "$0")"
-site_template="$site_root/site.html.template"
+sources_root="$(dirname "$0")"
+site_template="$sources_root/site.html.template"
 
-cd "$site_root" || exit 1
+cd "$sources_root" || exit 1
 
 # Clean before we start
 
-find "$site_root" -type f -name '*.html' -delete
-find "$site_root" -type f -name 'page-list*' -delete
+find "$sources_root" -type f -name '*.html' -delete
+find "$sources_root" -type f -name 'page-list*' -delete
 
 # Generate pages
 
@@ -38,9 +38,11 @@ find "$site_root" -type f -name 'page-list*' -delete
     esac
 
     CONTENT="$(cat "$content")"
+    ROOT="$(realpath --relative-to="$path" "$sources_root")"
 
     export TITLE
     export CONTENT
+    export ROOT
     envsubst \
       <"$site_template" \
       >"$path/$dest"
@@ -66,9 +68,11 @@ find "$site_root" -type f -name 'page-list*' -delete
 
     TITLE='Page List'
     CONTENT="<ul>$(sort -r "$list" | awk -F "$RS" 'NF { print("<li><a href=\""$1"\">"$2"</a></li>") }')</ul>"
+    ROOT="$(realpath --relative-to="$path" "$sources_root")"
 
     export TITLE
     export CONTENT
+    export ROOT
     envsubst \
       <"$site_template" \
       >"$path/$dest"

@@ -12,9 +12,9 @@
       <hr>
       <footer>
         <p>
-          <a href='/'>Home</a> |
-          <a href='/about.html'>About</a> |
-          <a href='/blog/'>Blog</a>
+          <a href='${ROOT}/'>Home</a> |
+          <a href='${ROOT}/about.html'>About</a> |
+          <a href='${ROOT}/blog/'>Blog</a>
         </p>
         <em>Written by a cat on the internet</em>
       </footer>
